@@ -1,6 +1,6 @@
 {
-  "engine":{
-    "node":"22.14.0"
+  "engine": {
+    "node": "22.14.0"
   },
   "name": "major-project",
   "version": "1.0.0",
@@ -14,7 +14,7 @@
   "description": "",
   "dependencies": {
     "bcrypt": "^6.0.0",
-    "cloudinary": "^2.9.0",
+    "cloudinary": "^1.41.3",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^6.0.0",
     "cookie-parser": "^1.4.7",
