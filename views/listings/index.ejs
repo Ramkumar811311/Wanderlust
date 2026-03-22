@@ -1,0 +1,441 @@
+<% layout("/layouts/boilerplate") %>
+
+    <style>
+        body {
+            background: #f7f7f7;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* ================= FILTERS ================= */
+        #filters {
+            display: flex;
+            gap: 20px;
+            padding: 12px 0;
+            overflow-x: auto;
+            align-items: center;
+        }
+
+        .filter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            opacity: 0.75;
+            transition: 0.3s;
+            min-width: 75px;
+            text-align: center;
+        }
+
+        .filter i {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .filter p {
+            margin: 0;
+            font-size: 12px;
+        }
+
+        .filter:hover {
+            color: #ff385c;
+            transform: scale(1.08);
+            opacity: 1;
+        }
+
+        /* TAX SWITCH */
+        .tax-switch {
+            margin-left: auto;
+            background: white;
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid #ddd;
+        }
+
+        /* ================= SLIDER ================= */
+        .row-slider {
+            margin-top: 30px;
+            position: relative;
+            padding: 0 10px;
+        }
+
+        .slider-track {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+        }
+
+        .slider-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* DESKTOP 3 */
+        .card-box {
+            flex: 0 0 33.33%;
+            padding: 10px;
+            scroll-snap-align: start;
+        }
+
+        /* CARD */
+        .listing-card {
+            border-radius: 16px;
+            overflow: hidden;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        /* IMAGE */
+        .card-img-top {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+        }
+
+        /* HOVER */
+        .listing-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ❤️ WISHLIST */
+        .wishlist {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 6px 8px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            z-index: 10;
+            transition: 0.3s;
+        }
+
+        .wishlist:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .wishlist.active i {
+            color: red;
+        }
+
+        /* TEXT */
+        .card-body {
+            padding: 10px;
+        }
+
+        /* ================= ARROWS ================= */
+        .arrow {
+            position: absolute;
+            top: 45%;
+            transform: translateY(-50%);
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .left {
+            left: 5px;
+        }
+
+        .right {
+            right: 5px;
+        }
+
+        h5.text-center {
+            display: flex;
+            justify-content: center;
+            /* horizontal center */
+            align-items: center;
+            /* vertical center */
+
+            width: fit-content;
+            margin: 20px auto;
+            /* center block */
+
+            padding: 10px 20px;
+            border-radius: 30px;
+
+            background: #fff;
+            font-size: 15px;
+            font-weight: 500;
+            color: #444;
+
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            /* text center */
+        }
+
+        /* Highlight location text */
+        h5.text-center::after {
+            content: "";
+        }
+
+        /* ================= MOBILE ================= */
+        @media (max-width:768px) {
+            .card-box {
+                flex: 0 0 100%;
+            }
+
+            .arrow {
+                display: none;
+            }
+        }
+    </style>
+    <% let safeListings=Array.isArray(allListings) ? allListings : []; function chunk(arr, size){ let res=[]; for(let
+        i=0; i < arr.length; i +=size){ res.push(arr.slice(i, i + size)); } return res; } let rows=chunk(safeListings,
+        6); %>
+
+        <!-- 🔥 SHOW SEARCH TEXT -->
+        <% if(typeof location !=="undefined" ){ %>
+            <h5 class="text-center mt-3">
+                Showing results for "<%= location %>"
+            </h5>
+            <% } %>
+
+                <!-- 🔥 NO RESULT MESSAGE -->
+                <% if(safeListings.length===0){ %>
+                    <p class="text-center mt-4 text-muted">
+                        No listings found 😢
+                    </p>
+                    <% } %>
+
+                        <!-- ================= FILTERS ================= -->
+                        <div id="filters">
+
+                            <div class="filter" data-category="trending">
+                                <i class="fa-solid fa-fire"></i>
+                                <p>Trending</p>
+                            </div>
+
+                            <div class="filter" data-category="rooms">
+                                <i class="fa-solid fa-bed"></i>
+                                <p>Rooms</p>
+                            </div>
+
+                            <div class="filter" data-category="mountain">
+                                <i class="fa-solid fa-mountain"></i>
+                                <p>Mountain</p>
+                            </div>
+
+                            <div class="filter" data-category="beach">
+                                <i class="fa-solid fa-water"></i>
+                                <p>Beach</p>
+                            </div>
+
+                            <div class="filter" data-category="camping">
+                                <i class="fa-solid fa-campground"></i>
+                                <p>Camping</p>
+                            </div>
+
+                            <div class="filter" data-category="arctic">
+                                <i class="fa-solid fa-snowflake"></i>
+                                <p>Arctic</p>
+                            </div>
+
+                            <div class="filter" data-category="forest">
+                                <i class="fa-solid fa-tree"></i>
+                                <p>Forest</p>
+                            </div>
+
+                            <div class="filter" data-category="city">
+                                <i class="fa-solid fa-city"></i>
+                                <p>City</p>
+                            </div>
+
+                            <div class="filter" data-category="lake">
+                                <i class="fa-solid fa-water-ladder"></i>
+                                <p>Lake</p>
+                            </div>
+
+                            <div class="filter" data-category="trekking">
+                                <i class="fa-solid fa-person-hiking"></i>
+                                <p>Trekking</p>
+                            </div>
+
+                            <div class="filter" data-category="cabins">
+                                <i class="fa-solid fa-warehouse"></i>
+                                <p>Cabins</p>
+                            </div>
+
+                            <div class="tax-switch">
+                                <input type="checkbox" id="taxToggle"> Include taxes
+                            </div>
+
+                        </div>
+
+
+                        <!-- ================= ROW LOOP ================= -->
+                        <% rows.forEach(function(row, rowIndex){ %>
+
+                            <div class="row-slider">
+
+                                <button class="arrow left" onclick="slideLeft(<%= rowIndex %>)">‹</button>
+
+                                <div class="slider-track" id="track-<%= rowIndex %>">
+
+                                    <% row.forEach(function(listing){ %>
+
+                                        <div class="card-box">
+
+                                            <a href="/listings/<%= listing._id %>"
+                                                style="text-decoration:none; color:inherit;">
+
+                                                <div class="card listing-card">
+
+                                                    <div style="position:relative;">
+                                                        <img src="<%= listing.image.url %>" class="card-img-top">
+
+                                                        <!-- ❤️ WISHLIST -->
+                                                        <div class="wishlist">
+                                                            <i class="fa-regular fa-heart"></i>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="card-body">
+                                                        <b>
+                                                            <%= listing.title %>
+                                                        </b><br>
+                                                        ₹ <%= listing.price.toLocaleString("en-IN") %> / night
+                                                            <span class="tax-info" style="display:none;"> +18%
+                                                                GST</span>
+                                                    </div>
+
+                                                </div>
+
+                                            </a>
+
+                                        </div>
+
+                                        <% }); %>
+
+                                </div>
+
+                                <button class="arrow right" onclick="slideRight(<%= rowIndex %>)">›</button>
+
+                            </div>
+
+                            <% }); %>
+
+                                <script>
+                                    // ================= TAX TOGGLE =================
+                                    document.getElementById("taxToggle").addEventListener("click", function () {
+                                        let taxInfo = document.getElementsByClassName("tax-info");
+
+                                        for (let i = 0; i < taxInfo.length; i++) {
+                                            taxInfo[i].style.display =
+                                                taxInfo[i].style.display === "inline" ? "none" : "inline";
+                                        }
+                                    });
+
+
+                                    // ================= SLIDER =================
+                                    let positions = {};
+
+                                    function getCardsPerView() {
+                                        return window.innerWidth <= 768 ? 1 : 3;
+                                    }
+
+                                    function slideRight(index) {
+                                        let track = document.getElementById("track-" + index);
+                                        let card = track.querySelector(".listing-card");
+
+                                        if (!card) return;
+
+                                        let move = (card.offsetWidth + 16) * getCardsPerView();
+
+                                        if (!positions[index]) positions[index] = 0;
+
+                                        positions[index] += move;
+
+                                        track.scrollTo({
+                                            left: positions[index],
+                                            behavior: "smooth"
+                                        });
+                                    }
+
+                                    function slideLeft(index) {
+                                        let track = document.getElementById("track-" + index);
+                                        let card = track.querySelector(".listing-card");
+
+                                        if (!card) return;
+
+                                        let move = (card.offsetWidth + 16) * getCardsPerView();
+
+                                        if (!positions[index]) positions[index] = 0;
+
+                                        positions[index] -= move;
+
+                                        if (positions[index] < 0) positions[index] = 0;
+
+                                        track.scrollTo({
+                                            left: positions[index],
+                                            behavior: "smooth"
+                                        });
+                                    }
+
+
+                                    // ================= WISHLIST ❤️ =================
+                                    document.addEventListener("click", function (e) {
+                                        if (e.target.closest(".wishlist")) {
+                                            e.preventDefault();
+
+                                            let btn = e.target.closest(".wishlist");
+                                            let icon = btn.querySelector("i");
+
+                                            btn.classList.toggle("active");
+
+                                            if (btn.classList.contains("active")) {
+                                                icon.classList.replace("fa-regular", "fa-solid");
+                                            } else {
+                                                icon.classList.replace("fa-solid", "fa-regular");
+                                            }
+                                        }
+                                    });
+
+
+                                    // ================= FILTER CLICK =================
+                                    document.querySelectorAll(".filter").forEach(filter => {
+
+                                        filter.addEventListener("click", () => {
+
+                                            let category = filter.dataset.category;
+
+                                            let params = new URLSearchParams(window.location.search);
+
+                                            if (category) {
+                                                params.set("category", category);
+                                            } else {
+                                                params.delete("category");
+                                            }
+
+                                            // redirect
+                                            window.location.href = "/listings?" + params.toString();
+
+                                        });
+
+                                    });
+
+
+                                    // ================= ACTIVE FILTER =================
+                                    let params = new URLSearchParams(window.location.search);
+                                    let currentCategory = params.get("category");
+
+                                    document.querySelectorAll(".filter").forEach(f => {
+
+                                        if (f.dataset.category === currentCategory) {
+                                            f.classList.add("active");
+                                        }
+
+                                    });
+                                </script>

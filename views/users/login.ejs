@@ -1,0 +1,116 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+    body {
+        background-color: #f7f7f7;
+    }
+
+    .login-card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        padding: 2rem;
+        background: #fff;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 10px 14px;
+    }
+
+    .btn-custom {
+        background-color: #ff385c;
+        color: white;
+        border-radius: 10px;
+        padding: 10px;
+        font-weight: 500;
+    }
+
+    .btn-custom:hover {
+        background-color: #e03150;
+    }
+
+    .form-label {
+        font-weight: 500;
+    }
+
+    .brand-title {
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="col-md-5 col-lg-4">
+        <div class="login-card">
+
+            <h3 class="brand-title">Welcome Back 👋</h3>
+
+            <form action="/login" method="post" class="needs-validation" novalidate>
+
+                <!-- Username -->
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input 
+                        name="username" 
+                        id="username" 
+                        placeholder="Enter username" 
+                        type="text" 
+                        class="form-control"
+                        required
+                    >
+                    <div class="invalid-feedback">
+                        Please enter your username
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3 position-relative">
+                    <label for="password" class="form-label">Password</label>
+                    <input 
+                        name="password" 
+                        id="password" 
+                        placeholder="Enter your password" 
+                        type="password"
+                        class="form-control"
+                        required
+                    >
+                    <div class="invalid-feedback">
+                        Please enter your password
+                    </div>
+                </div>
+
+                <!-- Button -->
+                <div class="d-grid">
+                    <button class="btn btn-custom">Login</button>
+                </div>
+
+            </form>
+
+            <!-- Extra Links -->
+            <div class="text-center mt-3">
+                <small>Don't have an account? <a href="/signup">Sign up</a></small>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Validation Script -->
+<script>
+(() => {
+    'use strict';
+    const forms = document.querySelectorAll('.needs-validation');
+
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+})();
+</script>

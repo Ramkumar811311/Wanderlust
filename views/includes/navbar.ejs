@@ -1,0 +1,142 @@
+<style>
+    /* ================= NAVBAR ================= */
+    .navbar {
+        transition: all 0.3s ease;
+    }
+
+    /* NAV LINKS */
+    .nav-link {
+        color: #222 !important;
+        font-weight: 500;
+    }
+
+    .nav-link:hover {
+        color: #ff385c !important;
+    }
+
+    /* LOGO */
+    .navbar-brand i {
+        color: #ff385c;
+    }
+
+    /* ================= SEARCH ================= */
+    .search-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        max-width: 350px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .search-inp {
+        flex: 1;
+        border-radius: 25px;
+        padding: 0.4rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    /* SEARCH BUTTON */
+    .search-btn {
+        background-color: #fe424d;
+        color: #fff;
+        border-radius: 25px;
+        padding: 0.4rem 1rem;
+        border: none;
+    }
+
+    .search-btn:hover {
+        background-color: #e03150;
+        color: #fff;
+    }
+
+    /* ================= RIGHT SECTION ================= */
+    .navbar-nav.d-flex {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* ================= MOBILE ================= */
+    @media (max-width: 768px) {
+
+        .navbar-nav {
+            margin-top: 10px;
+        }
+
+        .search-box {
+            width: 100%;
+            margin-top: 10px;
+            max-width: 100%;
+        }
+
+        .navbar-nav.d-flex {
+            flex-direction: column;
+            align-items: flex-start !important;
+            gap: 10px;
+            margin-top: 10px;
+        }
+    }
+</style>
+
+<nav class="navbar navbar-expand-md bg-body-tertiary border-bottom sticky-top">
+    <div class="container-fluid">
+
+        <!-- LOGO -->
+        <a class="navbar-brand" href="/listings">
+            <i class="fa-solid fa-compass"></i>
+        </a>
+
+        <!-- TOGGLER -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+
+            <!-- LEFT -->
+            <div class="navbar-nav">
+                <a class="nav-link" href="/listings">Explore</a>
+            </div>
+
+            <!-- SEARCH -->
+            <form action="/listings" method="GET" class="d-flex ms-auto me-auto search-box">
+
+                <input name="location" class="form-control search-inp" type="search"
+                    placeholder="Search location (e.g. Manali)">
+
+                <button class="btn search-btn" type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search
+                </button>
+
+            </form>
+
+            <!-- RIGHT -->
+            <div class="navbar-nav d-flex align-items-center">
+
+                <% if(currUser && currUser.role==="host" ) { %>
+                    <a class="nav-link" href="/listings/new">Airbnb your home</a>
+                    <% } %>
+                        <% if(currUser && currUser.role==="admin" ) { %>
+                            <a class="nav-link" href="/admin">Admin Panel</a>
+                            <% } %>
+                                <% if(currUser && currUser.role==="user" ){ %>
+                                    <a class="nav-link" href="/bookings">
+                                        <i class="fa-solid fa-calendar-check"></i> My Bookings
+                                    </a>
+                                    <% } %>
+
+                                        <% if(!currUser) { %>
+                                            <a class="nav-link" href="/signup"><b>Sign up</b></a>
+                                            <a class="nav-link" href="/login"><b>Log in</b></a>
+                                            <% } %>
+
+                                                <% if(currUser) { %>
+                                                    <a class="nav-link" href="/logout"><b>Log out</b></a>
+                                                    <% } %>
+
+            </div>
+
+        </div>
+    </div>
+</nav>

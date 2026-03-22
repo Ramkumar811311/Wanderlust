@@ -1,0 +1,155 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+    body {
+        background-color: #f7f7f7;
+    }
+
+    .signup-card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+        padding: 2rem;
+        background: #fff;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 10px 14px;
+    }
+
+    .btn-custom {
+        background-color: #ff385c;
+        color: white;
+        border-radius: 10px;
+        padding: 10px;
+        font-weight: 500;
+    }
+
+    .btn-custom:hover {
+        background-color: #e03150;
+    }
+
+    .form-label {
+        font-weight: 500;
+    }
+
+    .brand-title {
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 15px;
+        top: 38px;
+        cursor: pointer;
+        font-size: 14px;
+        color: #888;
+    }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="col-md-6 col-lg-5">
+        <div class="signup-card">
+
+```
+        <h3 class="brand-title">Create Account ✨</h3>
+
+        <form action="/signup" method="post" class="needs-validation" novalidate>
+
+            <!-- Username -->
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input name="username" id="username" placeholder="Enter username" type="text"
+                    class="form-control" required>
+                <div class="invalid-feedback">
+                    Username is required
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input name="email" id="email" placeholder="Enter email" type="email"
+                    class="form-control" required>
+                <div class="invalid-feedback">
+                    Enter a valid email
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3 position-relative">
+                <label for="password" class="form-label">Password</label>
+                <input name="password" id="password" placeholder="Enter password" type="password"
+                    class="form-control" required>
+                <span class="toggle-password" onclick="togglePassword('password')">Show</span>
+                <div class="invalid-feedback">
+                    Password is required
+                </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-3 position-relative">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input name="confirmPassword" id="confirmPassword" placeholder="Confirm password"
+                    type="password" class="form-control" required>
+                <span class="toggle-password" onclick="togglePassword('confirmPassword')">Show</span>
+                <div class="invalid-feedback">
+                    Please confirm your password
+                </div>
+            </div>
+
+            <!-- Role Selection -->
+            <div class="mb-3">
+                <label for="role" class="form-label">Register as</label>
+                <select name="role" id="role" class="form-control" required>
+                    <option value="">Select role</option>
+                    <option value="user">Customer (Book stays)</option>
+                    <option value="host">Host (List your property)</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please select a role
+                </div>
+            </div>
+
+            <!-- Button -->
+            <div class="d-grid">
+                <button class="btn btn-custom">Sign Up</button>
+            </div>
+
+        </form>
+
+        <!-- Extra Links -->
+        <div class="text-center mt-3">
+            <small>Already have an account? <a href="/login">Login</a></small>
+        </div>
+
+    </div>
+</div>
+```
+
+</div>
+
+<script>
+    function togglePassword(id) {
+        const input = document.getElementById(id);
+        input.type = input.type === "password" ? "text" : "password";
+    }
+
+    // Bootstrap validation
+    (() => {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })();
+</script>

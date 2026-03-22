@@ -1,0 +1,104 @@
+<% layout("/layouts/boilerplate") %>
+
+    <div class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9">
+
+                <!-- Card -->
+                <div class="card shadow-lg border-0 rounded-4 p-4">
+
+                    <h3 class="text-center fw-bold mb-4">🏡 Edit Your Listing</h3>
+
+                    <form method="post" action="/listings/<%- listing._id %>?_method=PUT" novalidate
+                        class="needs-validation" enctype="multipart/form-data">
+
+                        <!-- Title -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Title</label>
+                            <input name="listing[title]" value="<%= listing.title %>" type="text"
+                                class="form-control form-control-lg rounded-3 shadow-sm"
+                                placeholder="Enter listing title" required>
+                            <div class="invalid-feedback">Please enter title</div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Description</label>
+                            <textarea name="listing[description]" class="form-control rounded-3 shadow-sm" rows="4"
+                                placeholder="Write something about your place..."
+                                required><%= listing.description %></textarea>
+                            <div class="invalid-feedback">Enter description</div>
+                        </div>
+
+                        <!-- Image Preview -->
+                        <div class="mb-4 text-center">
+                            <label class="form-label fw-semibold">Current Image</label>
+
+                            <div class="mx-auto rounded-4 overflow-hidden shadow-sm"
+                                style="width: 250px; height: 250px;">
+                                <img src="<%= originalImageUrl || '/default.jpg' %>" class="w-100 h-100"
+                                    style="object-fit: cover;" onerror="this.src='/default.jpg'">
+                            </div>
+                        </div>
+
+                        <!-- Upload -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Upload New Image</label>
+                            <input name="listing[image]" type="file" class="form-control rounded-3 shadow-sm">
+                        </div>
+
+                        <!-- Price + Country -->
+                        <div class="row">
+                            <div class="col-md-4 mb-4">
+                                <label class="form-label fw-semibold">Price ₹</label>
+                                <input name="listing[price]" value="<%= listing.price %>" type="number" min="1"
+                                    class="form-control rounded-3 shadow-sm" placeholder="₹" required>
+                                <div class="invalid-feedback">Enter valid price</div>
+                            </div>
+
+                            <div class="col-md-8 mb-4">
+                                <label class="form-label fw-semibold">Country</label>
+                                <input name="listing[country]" value="<%= listing.country %>" type="text"
+                                    class="form-control rounded-3 shadow-sm" placeholder="Enter country" required>
+                                <div class="invalid-feedback">Enter country</div>
+                            </div>
+                        </div>
+
+                        <!-- Location -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Location</label>
+                            <input name="listing[location]" value="<%= listing.location %>" type="text"
+                                class="form-control rounded-3 shadow-sm" placeholder="Enter location" required>
+                            <div class="invalid-feedback">Enter location</div>
+                        </div>
+
+                        <!-- Button -->
+                        <div class="d-grid mt-3">
+                            <button class="btn btn-danger btn-lg rounded-3 shadow">
+                                🚀 Update Listing
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Validation Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const forms = document.querySelectorAll(".needs-validation");
+
+            forms.forEach(form => {
+                form.addEventListener("submit", function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add("was-validated");
+                });
+            });
+        });
+    </script>

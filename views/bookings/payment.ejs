@@ -1,0 +1,102 @@
+<% layout("/layouts/boilerplate") %>
+
+    <style>
+        .payment-card {
+            max-width: 400px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 16px;
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-preview {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            border-radius: 10px !important;
+        }
+    </style>
+
+    <div class="container mt-5">
+
+        <div class="payment-card">
+
+            <h4 class="text-center mb-3">Secure Payment 💳</h4>
+
+            <!-- CARD PREVIEW -->
+            <div class="card-preview">
+                <p>Card Number</p>
+                <h5 id="cardNumberPreview">**** **** **** ****</h5>
+            </div>
+
+            <form id="paymentForm" action="/bookings/confirm" method="POST">
+
+                <input type="text" id="cardNumber" class="form-control mb-3" placeholder="1234 5678 9012 3456" required>
+
+                <input type="text" class="form-control mb-3" placeholder="MM/YY" required>
+
+                <input type="text" class="form-control mb-3" placeholder="CVV" required>
+
+                <% const pricePerNight=listing.price; const basePrice=booking.totalPrice; const gst=Math.round(basePrice
+                    * 0.18); const finalTotal=basePrice + gst; %>
+
+                    <div class="mt-3">
+                        <p><strong>Price / Night:</strong> ₹<%= pricePerNight.toLocaleString("en-IN") %>
+                        </p>
+                        <p><strong>Base Price:</strong> ₹<%= basePrice.toLocaleString("en-IN") %>
+                        </p>
+                        <p><strong>GST (18%):</strong> ₹<%= gst.toLocaleString("en-IN") %>
+                        </p>
+
+                        <hr>
+
+                        <h5>
+                            <strong>Total Payable: ₹<%= finalTotal.toLocaleString("en-IN") %></strong>
+                        </h5>
+                    </div>
+
+                    <button class="btn btn-success w-100 mt-3" id="payBtn">
+                        Pay Now
+                    </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <script>
+        const cardInput = document.getElementById("cardNumber");
+        const preview = document.getElementById("cardNumberPreview");
+
+        // Card preview update
+        cardInput.addEventListener("input", () => {
+            preview.innerText = cardInput.value || "**** **** **** ****";
+        });
+
+        // Card format (auto spacing)
+        cardInput.addEventListener("input", (e) => {
+            let value = e.target.value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
+            let formatted = value.match(/.{1,4}/g)?.join(" ") || value;
+            e.target.value = formatted;
+        });
+
+        // Fake loading effect
+        document.getElementById("paymentForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const btn = document.getElementById("payBtn");
+            btn.innerText = "Processing...";
+            btn.disabled = true;
+
+            setTimeout(() => {
+                this.submit();
+            }, 2000);
+        });
+    </script>

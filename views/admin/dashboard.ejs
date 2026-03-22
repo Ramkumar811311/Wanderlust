@@ -1,0 +1,422 @@
+<% layout("/layouts/boilerplate") %>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #22c55e;
+            --primary-dark: #16a34a;
+
+            --accent: #f97316;
+
+            --bg: linear-gradient(135deg, #f0fdf4, #fff7ed);
+            --card: rgba(255, 255, 255, 0.9);
+
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+
+            --border: #e5e7eb;
+        }
+
+        /* BODY */
+        body {
+            background: var(--bg);
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* HEADER */
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(to right, #22c55e, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* STATS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: 0.3s;
+        }
+
+        /* CARD COLORS */
+        .card-rev {
+            background: linear-gradient(135deg, #22c55e, #4ade80);
+        }
+
+        .card-users {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        }
+
+        .card-listings {
+            background: linear-gradient(135deg, #f97316, #fb923c);
+        }
+
+        .card-bookings {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+        }
+
+        .icon {
+            font-size: 20px;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-rev {
+            background: linear-gradient(135deg, #22c55e, #4ade80);
+            color: white;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        /* GRID */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        /* CARD */
+        .card {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-head {
+            padding: 16px 20px;
+            font-weight: 600;
+            background: linear-gradient(to right, #f0fdf4, #fff7ed);
+        }
+
+        /* TABLE */
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .custom-table th {
+            text-align: left;
+            font-size: 12px;
+            color: var(--text-muted);
+            padding: 12px;
+        }
+
+        .custom-table td {
+            padding: 14px 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .custom-table tr:hover {
+            background: #f9fafb;
+        }
+
+        /* BUTTONS */
+        .action-btns {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn {
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #22c55e, #4ade80);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-danger {
+            background: #fff1f2;
+            color: #ef4444;
+        }
+
+        .btn-danger:hover {
+            background: #fee2e2;
+        }
+
+        /* LISTINGS */
+        .listing-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border-top: 1px solid var(--border);
+            transition: 0.2s;
+        }
+
+        .listing-row:hover {
+            background: #f9fafb;
+            transform: scale(1.01);
+        }
+
+        .listing-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        .listing-scroll {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        /* FULL WIDTH */
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* BOOKING IMAGE */
+        .booking-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 📱 BOOKING MOBILE FIX */
+        @media (max-width: 700px) {
+
+            .booking-table thead {
+                display: none;
+            }
+
+            .booking-row {
+                display: block;
+                background: white;
+                margin-bottom: 12px;
+                padding: 12px;
+                border-radius: 12px;
+            }
+
+            .booking-row td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 6px 0;
+                font-size: 14px;
+            }
+
+            .booking-row td::before {
+                font-weight: 600;
+                color: #6b7280;
+            }
+
+            .booking-row td:nth-child(1)::before {
+                content: "User";
+            }
+
+            .booking-row td:nth-child(2)::before {
+                content: "Listing";
+            }
+
+            .booking-row td:nth-child(3)::before {
+                content: "Amount";
+            }
+        }
+    </style>
+
+    <div class="container mt-4">
+
+        <!-- HEADER -->
+        <div class="dashboard-header">
+            <h2>Admin Dashboard</h2>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-grid">
+            <div class="stat-card card-rev">
+                <div class="icon">💰</div>
+                <div>
+                    <div class="stat-label">Revenue</div>
+                    <div class="stat-value">₹ <%= totalRevenue.toLocaleString("en-IN") %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card card-users">
+                <div class="icon">👤</div>
+                <div>
+                    <div class="stat-label">Users</div>
+                    <div class="stat-value">
+                        <%= users.length %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card card-listings">
+                <div class="icon">🏠</div>
+                <div>
+                    <div class="stat-label">Listings</div>
+                    <div class="stat-value">
+                        <%= listings.length %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card card-bookings">
+                <div class="icon">📦</div>
+                <div>
+                    <div class="stat-label">Bookings</div>
+                    <div class="stat-value">
+                        <%= bookings.length %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN -->
+        <div class="main-grid">
+
+            <!-- USERS -->
+            <div class="card">
+                <div class="card-head">Users</div>
+
+                <table class="custom-table">
+                    <tr>
+                        <th>User</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+
+                    <% users.forEach(u=> { %>
+                        <tr>
+                            <td>
+                                <%= u.username %>
+                            </td>
+                            <td>
+                                <%= u.role %>
+                            </td>
+                            <td>
+                                <div class="action-btns">
+
+                                    <% if(u.role==="user" ){ %>
+                                        <form action="/admin/users/<%= u._id %>/promote" method="POST">
+                                            <button class="btn btn-primary">Promote</button>
+                                        </form>
+                                        <% } %>
+
+                                            <form action="/admin/users/<%= u._id %>?_method=DELETE" method="POST">
+                                                <button class="btn btn-danger">Remove</button>
+                                            </form>
+
+                                </div>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </table>
+            </div>
+
+            <!-- LISTINGS -->
+            <div class="card">
+                <div class="card-head">Listings</div>
+
+                <div class="listing-scroll">
+                    <% listings.slice().reverse().forEach(l=> { %>
+                        <div class="listing-row">
+                            <img src="<%= l.image.url %>" class="listing-img">
+
+                            <div style="flex-grow:1;">
+                                <strong>
+                                    <%= l.title %>
+                                </strong><br>
+                                <span style="color:#6b7280;">₹ <%= l.price %></span>
+                            </div>
+
+                            <form action="/admin/listings/<%= l._id %>?_method=DELETE" method="POST">
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                        <% }) %>
+                </div>
+            </div>
+
+            <!-- BOOKINGS -->
+            <div class="card full-width">
+                <div class="card-head">Bookings</div>
+
+                <table class="custom-table booking-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Listing</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% bookings.forEach(b=> { %>
+                            <tr class="booking-row">
+
+                                <td>
+                                    <%= b.user.username %>
+                                </td>
+
+                                <td>
+                                    <img src="<%= b.listing.image.url %>" class="booking-img">
+                                </td>
+
+                                <td>₹ <%= b.totalPrice.toLocaleString("en-IN") %>
+                                </td>
+
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>

@@ -1,0 +1,119 @@
+<% layout("/layouts/boilerplate") %>
+
+    <style>
+        body {
+            background: #f7f7f7;
+        }
+
+        /* Container */
+        .booking-container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        /* Card */
+        .booking-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+            transition: 0.2s;
+        }
+
+        .booking-card:hover {
+            transform: translateY(-4px);
+        }
+
+        /* Image */
+        .booking-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        /* Content */
+        .booking-body {
+            padding: 15px;
+        }
+
+        /* Price */
+        .price {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Button */
+        .btn-cancel {
+            border-radius: 8px;
+        }
+    </style>
+
+    <div class="container mt-4 booking-container">
+
+        <h2 class="mb-4 fw-bold">Your Bookings</h2>
+
+        <% if(bookings.length===0){ %>
+            <div class="alert alert-info text-center">
+                No bookings yet 😔
+            </div>
+            <% } %>
+
+                <div class="row g-4">
+                    <% bookings.forEach(b=> { %>
+
+                        <div class="col-md-6">
+                            <div class="booking-card">
+
+                                <!-- Image -->
+                                <img src="<%= b.listing.image.url %>" class="booking-img">
+
+                                <!-- Content -->
+                                <div class="booking-body">
+
+                                    <h5 class="fw-bold">
+                                        <%= b.listing.title %>
+                                    </h5>
+                                    <p class="text-muted mb-1">
+                                        <%= b.listing.location %>, <%= b.listing.country %>
+                                    </p>
+
+                                    <hr>
+
+                                    <p><strong>Check-in:</strong>
+                                        <%= b.checkIn.toDateString() %>
+                                    </p>
+                                    <p><strong>Check-out:</strong>
+                                        <%= b.checkOut.toDateString() %>
+                                    </p>
+
+                                    <p class="price text-success">
+                                        <% const basePrice=b.totalPrice; const gst=Math.round(basePrice * 0.18); const
+                                            finalTotal=basePrice + gst; %>
+
+                                            <p><strong>Base:</strong> ₹<%= basePrice.toLocaleString("en-IN") %>
+                                            </p>
+                                            <p><strong>GST (18%):</strong> ₹<%= gst.toLocaleString("en-IN") %>
+                                            </p>
+
+                                            <p class="price text-success">
+                                                ₹ <%= finalTotal.toLocaleString("en-IN") %>
+                                            </p>
+                                    </p>
+
+                                    <!-- Cancel Button -->
+                                    <form action="/bookings/<%= b._id %>?_method=DELETE" method="POST"
+                                        onsubmit="return confirm('Are you sure you want to cancel this booking?')">
+                                        <button class="btn btn-danger btn-sm">
+                                            Cancel Booking
+                                        </button>
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <% }) %>
+                </div>
+
+    </div>

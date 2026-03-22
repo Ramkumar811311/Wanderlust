@@ -1,0 +1,58 @@
+<% layout("/layouts/boilerplate") %>
+
+    <style>
+        body {
+            background-color: #f7f7f7;
+        }
+
+        .error-card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+            padding: 2rem;
+            background: #fff;
+            text-align: center;
+        }
+
+        .error-icon {
+            font-size: 50px;
+            color: #ff385c;
+        }
+
+        .btn-home {
+            background-color: #ff385c;
+            color: white;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: 500;
+        }
+
+        .btn-home:hover {
+            background-color: #e03150;
+        }
+    </style>
+
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="col-md-6 col-lg-5">
+            <div class="error-card">
+
+                <!-- Icon -->
+                <div class="error-icon mb-3">⚠️</div>
+
+                <!-- Title -->
+                <h3 class="mb-3">Oops! Something went wrong</h3>
+
+                <!-- Dynamic Error Message -->
+                <p class="text-muted">
+                    <%= message %>
+                </p>
+
+                <!-- Buttons -->
+                <div class="mt-4 d-flex justify-content-center gap-2">
+                    <a href="/listings" class="btn btn-home">Go Home</a>
+                    <a href="javascript:history.back()" class="btn btn-outline-secondary">Go Back</a>
+                </div>
+
+            </div>
+        </div>
+    </div>

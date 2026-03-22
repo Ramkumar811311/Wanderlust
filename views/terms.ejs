@@ -1,0 +1,150 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+/* ========== BASE ========== */
+body {
+    background-color: #f7f7f7;
+    font-family: 'Circular', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    color: #222;
+}
+
+
+/* ========== CONTAINER ========== */
+.terms-container {
+    max-width: 850px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
+}
+
+html.dark .terms-container {
+    background: #1e1e1e;
+    box-shadow: none;
+}
+
+/* ========== HEADINGS ========== */
+.terms-container h1 {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.section {
+    margin-top: 30px;
+}
+
+.section h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* ========== TEXT ========== */
+.section p,
+.section li {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+}
+
+html.dark .section p,
+html.dark .section li {
+    color: #ccc;
+}
+
+/* ========== LINKS ========== */
+.footer-links {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #ff385c;
+    margin: 0 12px;
+    font-weight: 600;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+/* EMAIL */
+.email-link {
+    color: #ff385c;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.email-link:hover {
+    text-decoration: underline;
+}
+</style>
+
+<div class="terms-container">
+    <h1>Terms & Conditions</h1>
+
+    <p><strong>Last updated:</strong> <%= new Date().toDateString() %></p>
+
+    <div class="section">
+        <h4>1. Use of Platform</h4>
+        <p>You must provide accurate information and are responsible for your account.</p>
+    </div>
+
+    <div class="section">
+        <h4>2. Listings</h4>
+        <ul>
+            <li>You can create, edit, and delete listings</li>
+            <li>No illegal or fake listings allowed</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h4>3. User Conduct</h4>
+        <ul>
+            <li>No harmful or misleading content</li>
+            <li>No hacking or misuse of the platform</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h4>4. Account Responsibility</h4>
+        <p>You are responsible for maintaining the security of your account.</p>
+    </div>
+
+    <div class="section">
+        <h4>5. Content Ownership</h4>
+        <p>You own your content but allow Wanderlust to display it.</p>
+    </div>
+
+    <div class="section">
+        <h4>6. Termination</h4>
+        <p>We may suspend accounts that violate our rules.</p>
+    </div>
+
+    <div class="section">
+        <h4>7. Disclaimer</h4>
+        <p>This is a demo project. We are not responsible for user transactions or damages.</p>
+    </div>
+
+    <div class="section">
+        <h4>8. Changes to Terms</h4>
+        <p>We may update these terms at any time.</p>
+    </div>
+
+    <div class="section">
+        <h4>9. Contact</h4>
+        <p>
+            Email:
+            <a href="mailto:ramkumar070406@gmail.com" class="email-link">
+                ramkumar070406@gmail.com
+            </a>
+        </p>
+    </div>
+
+    <div class="footer-links">
+        <a href="/listings">Home</a>
+        <a href="/privacy">Privacy</a>
+    </div>
+</div>

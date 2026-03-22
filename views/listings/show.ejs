@@ -1,0 +1,267 @@
+<% layout("/layouts/boilerplate") %>
+
+    <style>
+        body {
+            background-color: #f7f7f7;
+            font-family: 'Circular', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        /* MAIN */
+        .main-container {
+            max-width: 950px;
+            margin: auto;
+        }
+
+        /* IMAGE */
+        .show-image {
+            height: 360px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 18px;
+        }
+
+        /* CARD */
+        .listing-card {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            margin-top: 15px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        /* PRICE */
+        .price {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        /* BUTTONS */
+        .btn-modern {
+            border-radius: 10px;
+            padding: 8px 16px;
+        }
+
+        /* REVIEW FORM */
+        .review-form {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        /* REVIEW CARD */
+        .review-card {
+            background: white;
+            border-radius: 14px;
+            padding: 14px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+            transition: 0.2s;
+        }
+
+        .review-card:hover {
+            transform: translateY(-3px);
+        }
+
+        /* MAP */
+        .map-section {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        #map {
+            height: 320px;
+            border-radius: 14px;
+        }
+
+        /* SPACING */
+        .section {
+            margin-top: 30px;
+        }
+    </style>
+
+    <div class="container mt-4 main-container">
+
+        <!-- TITLE -->
+        <h3 class="fw-bold">
+            <%= listing.title %>
+        </h3>
+        <p class="text-muted">
+            <%= listing.location %>, <%= listing.country %>
+        </p>
+
+        <!-- IMAGE -->
+        <img src="<%= listing.image.url %>" class="show-image">
+
+        <!-- DETAILS -->
+        <div class="listing-card">
+            <p class="text-muted mb-1">
+                Hosted by <strong>
+                    <%= listing.owner.username %>
+                </strong>
+            </p>
+
+            <p>
+                <%= listing.description %>
+            </p>
+
+            <p class="price">
+                ₹ <%= listing.price.toLocaleString("en-IN") %>
+                    <span class="text-muted">/ night</span>
+            </p>
+        </div>
+        <% if(currUser && !listing.owner._id.equals(currUser._id)){ %>
+            <div class="listing-card mt-3">
+                <h5 class="mb-3">Book this stay</h5>
+
+                <form action="/bookings/<%= listing._id %>" method="POST">
+                    <div class="row g-2">
+
+                        <div class="col-md-6">
+                            <label>Check-In</label>
+                            <input type="date" name="checkIn" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Check-Out</label>
+                            <input type="date" name="checkOut" class="form-control" required>
+                        </div>
+
+                        <div class="col-12 d-grid mt-2">
+                            <button class="btn btn-success btn-modern" id="bookBtn">
+                                Reserve Now
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <% } else if(!currUser){ %>
+                <p class="text-danger">Please login to book</p>
+                <% } else { %>
+                    <p class="text-warning">You cannot book your own listing</p>
+                    <% } %>
+
+                        <!-- BUTTONS -->
+                        <div class="d-flex gap-2 mt-3">
+
+                            <% if(currUser && listing.owner._id.equals(currUser._id)) { %>
+
+                                <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark btn-modern">Edit</a>
+
+                                <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
+                                    <button class="btn btn-danger btn-modern">Delete</button>
+                                </form>
+
+                                <% } %>
+
+                                    <a href="/listings" class="btn btn-outline-secondary btn-modern">Back</a>
+
+                        </div>
+
+                        <!-- REVIEW FORM -->
+                        <% if(currUser){ %>
+                            <div class="review-form section">
+                                <h5 class="mb-3">Leave a Review</h5>
+
+                                <form action="/listings/<%= listing._id %>/reviews" method="POST">
+                                    <div class="row g-2">
+
+                                        <div class="col-md-3">
+                                            <select name="review[rating]" class="form-select">
+                                                <option value="1">1 ⭐</option>
+                                                <option value="2">2 ⭐</option>
+                                                <option value="3">3 ⭐</option>
+                                                <option value="4">4 ⭐</option>
+                                                <option value="5">5 ⭐</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-7">
+                                            <textarea name="review[comment]" class="form-control"
+                                                placeholder="Share your experience..." required></textarea>
+                                        </div>
+
+                                        <div class="col-md-2 d-grid">
+                                            <button class="btn btn-dark">Post</button>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <% } %>
+
+                                <!-- REVIEWS -->
+                                <div class="section">
+                                    <h5>All Reviews</h5>
+
+                                    <div class="row">
+                                        <% for(let review of listing.reviews){ %>
+                                            <div class="col-md-6 mb-3">
+                                                <div class="review-card">
+                                                    <strong>@<%= review.author.username %></strong>
+                                                    <p>⭐ <%= review.rating %>
+                                                    </p>
+                                                    <p>
+                                                        <%= review.comment %>
+                                                    </p>
+                                                    <small class="text-muted">
+                                                        <%= review.createdAt.toDateString() %>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <% } %>
+                                    </div>
+                                </div>
+
+                                <!-- MAP -->
+                                <div class="map-section section">
+                                    <h5>Location</h5>
+                                    <div id="map"></div>
+                                </div>
+
+    </div>
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", function () {
+            const btn = document.getElementById("bookBtn");
+            btn.innerText = "Booking...";
+            btn.disabled = true;
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+
+            let coords = <%- JSON.stringify(listing.geometry ? listing.geometry.coordinates : [-118.2437, 34.0522]) %>;
+
+            let lat = coords[1];
+            let lng = coords[0];
+
+            let map = L.map('map').setView([lat, lng], 13);
+
+            // 🌿 Outdoor Map
+            L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png', {
+                maxZoom: 20
+            }).addTo(map);
+
+            map.flyTo([lat, lng], 13, { duration: 2 });
+
+            let marker = L.marker([lat, lng]).addTo(map);
+
+            marker.bindPopup(`
+        <b><%= listing.title %></b><br>
+        <%= listing.location %>
+    `).openPopup();
+
+            L.circle([lat, lng], {
+                stroke: false,
+                fillColor: '#ff385c',
+                fillOpacity: 0.2,
+                radius: 900
+            }).addTo(map);
+
+        });
+    </script>
