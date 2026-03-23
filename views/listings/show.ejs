@@ -243,8 +243,9 @@
             let map = L.map('map').setView([lat, lng], 13);
 
             // 🌿 Outdoor Map
-            L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png', {
-                maxZoom: 20
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap contributors'
             }).addTo(map);
 
             map.flyTo([lat, lng], 13, { duration: 2 });
