@@ -117,7 +117,32 @@ app.get("/privacy", (req, res) => {
 app.get("/terms", (req, res) => {
     res.render("terms.ejs");
 });
+app.get("/reset-password", (req, res) => {
+    res.render("reset-password");
+});
+app.post("/reset-password", async (req, res) => {
+    const { username, password, confirmPassword } = req.body;
 
+    // check passwords match
+    if (password !== confirmPassword) {
+        req.flash("error", "Passwords do not match ❌");
+        return res.redirect("/reset-password");
+    }
+
+    const user = await User.findOne({ username });
+
+    if (!user) {
+        req.flash("error", "User not found ❌");
+        return res.redirect("/reset-password");
+    }
+
+    // ✅ CORRECT METHOD
+    await user.setPassword(password);
+    await user.save();
+
+    req.flash("success", "Password reset successful ✅");
+    res.redirect("/login");
+});
 
 
 app.use((req, res, next) => {
